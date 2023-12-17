@@ -3,10 +3,12 @@ import com.auca.exam.HealthCareLocator.Model.Hospital;
 import com.auca.exam.HealthCareLocator.Model.Symptom;
 import com.auca.exam.HealthCareLocator.Model.User;
 import com.auca.exam.HealthCareLocator.Service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -61,7 +63,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password, Model model) {
+    public String loginUser(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
         // Authenticate user using the UserService
         User authenticatedUser = userService.login(username, password);
 
@@ -71,6 +73,7 @@ public class UserController {
 
             // Add the username to the model attribute
             model.addAttribute("loggedInUserName", loggedInUserName);
+            session.setAttribute("loggedInUserId", authenticatedUser.getId());
 
             // If authentication succeeds, redirect to the client page
             return "Client/HomePage"; // Assuming "client" is the endpoint for the client page
@@ -80,6 +83,13 @@ public class UserController {
         }
     }
 
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes){
+        session.invalidate();
+        redirectAttributes.addFlashAttribute("logged_out", "Logged out successfully");
+        return "/Client/HomePage";
+    }
 
     private User getUserById(Long userId) {
         throw new RuntimeException("User not found with ID: " + userId);

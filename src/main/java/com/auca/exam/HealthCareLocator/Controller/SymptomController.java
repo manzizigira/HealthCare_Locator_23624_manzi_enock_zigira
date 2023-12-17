@@ -7,6 +7,7 @@ import com.auca.exam.HealthCareLocator.Service.SymptomService;
 import com.auca.exam.HealthCareLocator.exceptions.HospitalNotFoundException;
 import com.auca.exam.HealthCareLocator.exceptions.SymptomNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -159,7 +160,8 @@ public class SymptomController {
     }
 
     @GetMapping("/nearestHospitals")
-    public String getNearestHospitals(Model model) {
+    public String getNearestHospitals(Model model, HttpSession session) {
+
         List<Symptom> symptoms = symptomService.getAllSymptoms(); // Fetch symptoms from the service
 
         model.addAttribute("symptoms", symptoms);
@@ -238,10 +240,15 @@ public class SymptomController {
 
 
     @GetMapping("/ViewPage")
-    public String showSymptoms(Model model) {
-        List<Symptom> symptoms = symptomService.getAllSymptoms();
-        model.addAttribute("symptoms", symptoms);
-        return "/Admin/Symptom/ViewSymptom"; // Return the name of your Thymeleaf HTML template
+    public String showSymptoms(Model model, HttpSession session) {
+        Integer id = (Integer) session.getAttribute("loggedInUserId");
+        if (id == null) {
+            return "Client/Login"; // Redirect to login page if not logged in
+        } else {
+            List<Symptom> symptoms = symptomService.getAllSymptoms();
+            model.addAttribute("symptoms", symptoms);
+            return "/Admin/Symptom/ViewSymptom"; // Return the name of your Thymeleaf HTML template
+        }
     }
 
 
