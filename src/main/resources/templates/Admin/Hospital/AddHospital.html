@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Hospital</title>
+    <link rel="stylesheet" href="/css/adminhome.css">
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Adjust as needed */
+        }
+
+        .add-symptom {
+            text-align: center;
+        }
+
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+
+</style>
+</head>
+<body style="background-image: url('/css/273376-surgery-hospital-medical-and-doctor-hd.jpg'); background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;">
+<header>
+    <div class="logo">
+        <img src="/css/healthcarelocator-high-resolution-logo.png" alt="Logo" style="max-width: 150px; max-height: 50px;">
+    </div>
+    <div class="admin-profile">
+        Add New Hospital <!-- Admin profile information: username, role, etc. -->
+    </div>
+    <div class="logout">
+        <a href="/admin/home">Back</a> <!-- Logout link/button -->
+    </div>
+</header>
+<main>
+<form id="addHospitalForm" method="post" action="/hospitals/add">
+    <label for="name" style="color:white">Hospital Name:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="address" style="color:white">Address:</label><br>
+    <input type="text" id="address" name="address"><br><br>
+
+    <label for="latitude" style="color:white">Latitude:</label><br>
+    <input type="text" id="latitude" name="latitude"><br><br>
+
+    <label for="longitude" style="color:white">Longitude:</label><br>
+    <input type="text" id="longitude" name="longitude"><br><br>
+
+    <label for="googleMapsUrl" style="color:white">Google Maps URL:</label><br>
+    <input type="text" id="googleMapsUrl" name="googleMapsUrl"><br><br>
+
+    <label for="operatingHours" style="color:white">Operating Hours:</label><br>
+    <div id="operatingHours">
+        <label for="monday" style="color:white">Monday:</label>
+        <input type="text" id="monday" name="operatingHours[monday]"><br>
+
+        <label for="tuesday" style="color:white">Tuesday:</label>
+        <input type="text" id="tuesday" name="operatingHours[tuesday]"><br>
+
+        <label for="wednesday" style="color:white">Wednesday:</label>
+        <input type="text" id="wednesday" name="operatingHours[wednesday]"><br>
+
+        <label for="thursday" style="color:white">Thursday:</label>
+        <input type="text" id="thursday" name="operatingHours[thursday]"><br>
+
+        <label for="friday" style="color:white">Friday:</label>
+        <input type="text" id="friday" name="operatingHours[friday]"><br>
+
+        <label for="saturday" style="color:white">Saturday:</label>
+        <input type="text" id="saturday" name="operatingHours[saturday]"><br>
+
+        <label for="sunday" style="color:white">Sunday:</label>
+        <input type="text" id="sunday" name="operatingHours[sunday]"><br>
+
+    </div><br>
+
+
+    <div class="add-symptom">
+        <label for="treatedSymptoms" style="color:white">Treated Symptoms:</label>
+        <select id="treatedSymptoms" name="treatedSymptoms">
+            <option value="">Select a symptom</option>
+        </select>
+    </div>
+
+    <input type="submit" value="Add Hospital">
+<script>
+    // Function to fetch symptoms and populate the dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectBox = document.getElementById('treatedSymptoms');
+
+        function fetchSymptoms() {
+            fetch('/symptoms/all')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(symptoms => {
+                    selectBox.innerHTML = ''; // Clear previous options
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Select a symptom';
+                    selectBox.appendChild(defaultOption);
+
+                    symptoms.forEach(symptom => {
+                        const option = document.createElement('option');
+                        option.value = symptom.id;
+                        option.textContent = symptom.name;
+                        selectBox.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching symptoms:', error);
+                });
+        }
+
+        fetchSymptoms(); // Fetch symptoms on page load
+    });
+</script>
+</form>
+</main>
+</body>
+</html>

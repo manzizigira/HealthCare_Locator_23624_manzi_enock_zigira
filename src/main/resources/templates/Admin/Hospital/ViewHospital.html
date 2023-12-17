@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Hospitals</title>
+    <link rel="stylesheet" href="/css/adminhome.css">
+    <!-- Include any necessary CSS or styling links here -->
+    <style>
+        /* Add your styles here */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            background-color: grey;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            word-wrap: break-word;
+            max-width: 150px; /* Adjust as needed */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        td{
+            color: white;
+         }
+        th {
+            background-color: #f2f2f2;
+        }
+        .long-text {
+            max-width: none;
+        }
+
+        body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1; /* Allow main content to expand */
+}
+
+footer {
+    background-color: rgba(50, 50, 50, 0.7);
+    padding: 10px;
+    text-align: center;
+}
+
+    </style>
+    </style>
+</head>
+<body style="background-image: url('/css/stethoscope-on-laptop-close-up-free-photo.jpeg'); background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the background image fixed */
+    margin: 0;
+    padding: 0;">
+<header>
+    <div class="logo">
+        <img src="/css/healthcarelocator-high-resolution-logo.png" alt="Logo" style="max-width: 150px; max-height: 50px;">
+    </div>
+    <div class="admin-profile">
+        <h1>List of Hospitals</h1> <!-- Admin profile information: username, role, etc. -->
+    </div>
+    <div class="logout">
+        <a href="/admin/log">Log Out</a> <!-- Logout link/button -->
+    </div>
+</header>
+<main>
+<h1 style="color:white">List of Hospitals</h1>
+    <form th:action="@{/p}" method="get">
+        <label for="searchTerm">Search:</label>
+        <input type="text" id="searchTerm" name="searchTerm" th:value="${searchTerm}" />
+        <button type="submit">Search</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Name</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=address&sortDir=' + ${reverseSortDir}}">Address</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=latitude&sortDir=' + ${reverseSortDir}}">Latitude</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=longitude&sortDir=' + ${reverseSortDir}}">Longitude</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=googleMapsUrl&sortDir=' + ${reverseSortDir}}">Google Maps URL</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=operatingHours&sortDir=' + ${reverseSortDir}}">Operating Hours</a></th>
+            <th><a th:href="@{'/ViewHospital/' + ${currentPage} + '?sortField=treatedSymptoms&sortDir=' + ${reverseSortDir}}">Treated Symptoms</a></th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="hospital : ${Hospitals}">
+            <td th:text="${hospital.id}"></td>
+            <td th:text="${hospital.name}"></td>
+            <td th:text="${hospital.address}"></td>
+            <td th:text="${hospital.latitude}"></td>
+            <td th:text="${hospital.longitude}"></td>
+            <td th:text="${hospital.googleMapsUrl}"></td>
+            <td>
+                <ul th:if="${hospital.operatingHours != null}">
+                    <li th:each="entry : ${hospital.operatingHours}"
+                        th:text="${entry.key + ': ' + entry.value}"></li>
+                </ul>
+            </td>
+            <td>
+                <ul th:if="${hospital.treatedSymptoms != null}">
+                    <li th:each="symptom : ${hospital.treatedSymptoms}"
+                        th:text="${symptom.name}"></li>
+                </ul>
+            </td>
+            <td>
+                <a th:href="@{/hospitals/update/{id} (id=${hospital.id})}">Update</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${totalPages > 1}">
+        <div>
+            Total Rows:[[${totalItems}]]
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${currentPage != i}" th:href="@{'/ViewHospital/' + ${i} + '?sortField=id&sortDir=' + ${reverseSortDir}}">[[${i}]]</a>
+                <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;&nbsp;
+            </span>
+
+            <a th:if="${currentPage < totalPages}" th:href="@{'/ViewHospital/' + ${currentPage + 1} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+
+            <a th:if="${currentPage < totalPages}" th:href="@{'/ViewHospital/' + ${totalPages} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Last</a>
+            <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+    </div>
+    <a th:href="@{/downloadCSV}" class="button">Download Full Report</a>
+</main>
+<footer>
+    <div class="back-to-top">
+        <a href="#top">Back to Top</a> <!-- Back to Top button -->
+    </div>
+</footer>
+</body>
+</html>

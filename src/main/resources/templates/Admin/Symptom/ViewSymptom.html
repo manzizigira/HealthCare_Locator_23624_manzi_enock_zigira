@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Symptoms Table</title>
+    <link rel="stylesheet" href="/css/adminhome.css">
+    <style>
+        /* Add your styles here */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            background-color: grey;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            word-wrap: break-word;
+            max-width: 150px; /* Adjust as needed */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        td{
+            color: white;
+         }
+        th {
+            background-color: #f2f2f2;
+        }
+        .long-text {
+            max-width: none;
+        }
+
+        body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1; /* Allow main content to expand */
+}
+
+footer {
+    background-color: rgba(50, 50, 50, 0.7);
+    padding: 10px;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body style="background-image: url('/css/stethoscope-on-laptop-close-up-free-photo.jpeg'); background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the background image fixed */
+    margin: 0;
+    padding: 0;">
+<header>
+    <div class="logo">
+        <img src="/css/healthcarelocator-high-resolution-logo.png" alt="Logo" style="max-width: 150px; max-height: 50px;">
+    </div>
+    <div class="admin-profile">
+        <h1>List of Symptoms</h1> <!-- Admin profile information: username, role, etc. -->
+    </div>
+    <div class="logout">
+        <a href="/admin/log">Log Out</a> <!-- Logout link/button -->
+    </div>
+</header>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Hospitals</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="symptom : ${symptoms}">
+        <td th:text="${symptom.id}"></td>
+        <td th:text="${symptom.name}"></td>
+        <td>
+            <ul>
+                <li th:each="hospital : ${symptom.hospitals}" th:text="${hospital.name}"></li>
+            </ul>
+        </td>
+        <td> <a th:href="@{/symptoms/updateSymptom/{id} (id=${symptom.id})}">Update</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

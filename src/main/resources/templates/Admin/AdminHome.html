@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Home</title>
+    <!-- Link your CSS file -->
+    <link rel="stylesheet" href="/css/adminhome.css">
+    <link rel="stylesheet" href="/css/clienthome.css">
+</head>
+<style>
+    .title h1{
+    font-size:20px;
+    margin-right:500px;
+
+    .navbar-header {
+    /* Assuming your navbar header has a width or a max-width */
+    text-align: center; /* Center aligns the elements horizontally */
+}
+
+.search-container {
+    display: inline-block; /* Allows the container to take the width of its contents */
+    text-align: left; /* Aligns the input field and results div to the left within the container */
+}
+
+
+</style>
+<body style="background-image: url('/css/273376-surgery-hospital-medical-and-doctor-hd.jpg'); background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the background image fixed */
+    margin: 0;
+    padding: 0;">
+<header>
+    <div class="logo">
+        <img src="/css/healthcarelocator-high-resolution-logo.png" alt="Logo" style="max-width: 150px; max-height: 50px;">
+    </div>
+    <div class="title">
+        <h1>ℌ𝔢𝔞𝔩𝔱𝔥 ℭ𝔞𝔯𝔢 𝔏𝔬𝔠𝔞𝔱𝔬𝔯</h1>
+    </div>
+    <form id="searchForm" action="/Search/results" method="get">
+        <input type="text" id="searchInput" name="query" placeholder="Search...">
+        <!-- Suggestions will be displayed here -->
+        <div id="autocompleteSuggestions"></div>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="admin-profile">
+        Welcome, Admin! <!-- Admin profile information: username, role, etc. -->
+    </div>
+    <div class="logout">
+        <a href="/admin/log">Log Out</a> <!-- Logout link/button -->
+    </div>
+</header>
+<main>
+
+    <div class="operation-box">
+        <h2>Hospital Operations</h2> <!-- Box for operation 1: Hospital operations -->
+        <ul>
+            <li><a href="/p">View Hospitals</a></li>
+            <li><a href="/hospitals/AddPage">Add Hospitals</a></li>
+        </ul>
+    </div>
+    <div class="operation-box">
+        <h2>Symptom Operations</h2> <!-- Box for operation 2: Symptom operations -->
+        <ul>
+            <li><a href="/symptoms/ViewPage">All Symptoms</a></li>
+            <li><a href="/symptoms/symptom">Add New Symptom</a></li>
+            <!-- Other symptom-related operations -->
+        </ul>
+    </div>
+    <div class="operation-box">
+        <h2>Hospital Operations</h2> <!-- Box for operation 1: Hospital operations -->
+        <ul>
+            <li><a href="/user/viewsPage">View Users</a></li>
+        </ul>
+    </div>
+
+    <div class="search-results">
+        <h2>Search Results</h2>
+        <ul id="searchResultList">
+            <!-- Search results will be displayed here -->
+        </ul>
+    </div>
+</main>
+<footer>
+    <div class="back-to-top">
+        <a href="#top">Back to Top</a> <!-- Back to Top button -->
+    </div>
+</footer>
+<script>
+document.getElementById("searchInput").addEventListener("input", function(event) {
+    let query = event.target.value;
+
+    fetch(`/Search/suggestions?query=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            displayAutocompleteSuggestions(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+function displayAutocompleteSuggestions(suggestions) {
+    const autocompleteSuggestions = document.getElementById("autocompleteSuggestions");
+    autocompleteSuggestions.innerHTML = "";
+
+    if (suggestions.length === 0) {
+        autocompleteSuggestions.style.display = "none";
+    } else {
+        autocompleteSuggestions.style.display = "block";
+
+        suggestions.forEach(suggestion => {
+            const suggestionItem = document.createElement("div");
+            suggestionItem.textContent = suggestion;
+
+            suggestionItem.addEventListener("click", function() {
+                // Update the redirection to match the correct endpoint or page
+                window.location.href = `/Search/goToPage?query=${suggestion}`;
+            });
+
+            autocompleteSuggestions.appendChild(suggestionItem);
+        });
+    }
+}
+</script>
+</body>
+</html>

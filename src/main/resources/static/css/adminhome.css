@@ -1,0 +1,95 @@
+        /* Sample CSS styles - Replace with your own styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: rgba(50, 50, 50, 0.7); /* Adjust the RGB values and opacity as needed */
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .logo {
+            width: 150px; /* Set your desired width */
+            height: auto;
+        }
+        header .admin-profile {
+            /* Admin profile styles */
+        }
+        header .logout {
+            /* Logout styles */
+        }
+        main {
+            background-color: rgba(50, 50, 50, 0.5); /* Adjust the RGB values and opacity as needed */
+            padding: 20px;
+        }
+        main .background-pic {
+            /* Background image styles */
+        }
+        main .operation-box {
+            /* Box styles for operations */
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            background-color: rgba(50, 50, 50, 0.7); /* Adjust the RGB values and opacity as needed */
+            padding: 10px;
+        }
+        footer {
+            background-color: rgba(50, 50, 50, 0.7); /* Adjust the RGB values and opacity as needed */
+            padding: 10px;
+            text-align: center;
+        }
+        footer .back-to-top {
+            /* Back to Top button styles */
+        }
+
+        /* Style for links inside the operation boxes */
+        .operation-box ul li a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #333;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Hover effect for links */
+        .operation-box ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Style for Log Out and Back to Top links */
+        .logout a,
+        .back-to-top a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        /* Hover effect for links */
+        .logout a:hover,
+        .back-to-top a:hover {
+            background-color: #555;
+        }
+
+        /* Style for titles in the header and operation boxes */
+        header h1,
+        .operation-box h2 {
+            color: #fff;
+        }
+
+        /* Style for the title in the admin profile */
+        .admin-profile {
+            color: #fff;
+            /* Add additional styles as needed */
+        }
+
+

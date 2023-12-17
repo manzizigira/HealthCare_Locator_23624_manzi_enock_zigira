@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Select Symptoms</title>
+  <link rel="stylesheet" href="/css/clienthome.css">
+</head>
+<style>
+    .title h1{
+    font-size:20px;
+    margin-right:1005px;
+
+    .content h2{
+        font-size:80px;
+        margin-right:691px;
+        color : white;
+    }
+
+    .content p{
+        font-size:20px;
+        margin-right:691px;
+        color : black;
+    }
+
+</style>
+<body style="background-image: url('/css/wallpaperflare.com_wallpaper.jpg'); background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the background image fixed */
+    margin: 0;
+    padding: 0;">
+
+<header>
+  <div class="logo">
+    <img src="/css/healthcarelocator-high-resolution-logo.png" alt="Logo" style="max-width: 150px; max-height: 50px;">
+  </div>
+  <div class="title">
+    <h1>ℌ𝔢𝔞𝔩𝔱𝔥 ℭ𝔞𝔯𝔢 𝔏𝔬𝔠𝔞𝔱𝔬𝔯</h1>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="/user/viewed">Home</a></li>
+      <li><a href="#" th:text="${loggedInUserName}"></a></li>
+      <li><a href="/user/viewed">Back</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h1>Select Symptoms</h1>
+  <form id="symptomForm" method="post" action="/symptoms/hospitals">
+    <div id="symptomSelections">
+      <div class="symptomSelect" id="symptom1">
+        <label for="symptom1">Symptom 1:</label>
+        <select name="symptomIds">
+          <option value="">Select a Symptom</option>
+          <!-- Populate options dynamically using Thymeleaf -->
+          <th:block th:each="symptom : ${symptoms}">
+            <option th:value="${symptom.id}" th:text="${symptom.name}"></option>
+          </th:block>
+        </select>
+      </div>
+    </div>
+    <button type="button" id="addSymptom">Add Another Symptom</button>
+    <br><br>
+    <button type="button" id="findHospitals">Find Hospitals</button>
+    <!-- Hidden fields for latitude, longitude, and submit button -->
+    <input type="hidden" id="userLatitude" name="userLatitude">
+    <input type="hidden" id="userLongitude" name="userLongitude">
+    <input type="submit" id="submitButton" style="display: none;">
+  </form>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <p>https://healthcarelocator.com</p>
+    <p>+(250)786731217</p>
+    <!-- Your picture -->
+  </div>
+  <div class="back-to-top" style="
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Button background color */
+    color: #fff; /* Button text color */
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+hover:background-color: #555; /* Button hover background color */
+">
+    <a href="#top">Back to Top</a>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addSymptomButton = document.getElementById('addSymptom');
+    const symptomSelections = document.getElementById('symptomSelections');
+    let symptomCount = 1;
+
+    addSymptomButton.addEventListener('click', function() {
+        symptomCount++;
+
+        const existingSymptomDiv = document.getElementById(`symptom${symptomCount - 1}`);
+        const clonedSymptomDiv = existingSymptomDiv.cloneNode(true);
+        clonedSymptomDiv.id = `symptom${symptomCount}`;
+        clonedSymptomDiv.querySelector('label').textContent = `Symptom ${symptomCount}:`;
+        clonedSymptomDiv.querySelector('select').name = `symptomIds`;
+
+        symptomSelections.appendChild(clonedSymptomDiv);
+    });
+
+    const findHospitalsButton = document.getElementById('findHospitals');
+    findHospitalsButton.addEventListener('click', function() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById('userLatitude').value = position.coords.latitude;
+                document.getElementById('userLongitude').value = position.coords.longitude;
+                document.getElementById('submitButton').click();
+            }, function(error) {
+                console.error('Error getting user location:', error.message);
+                alert('Error getting user location. Please allow location access.');
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Symptom</title>
+    <link rel="stylesheet" href="/css/adminhome.css">
+</head>
+<body style="background-image: url('/css/273376-surgery-hospital-medical-and-doctor-hd.jpg'); background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;">
+<style>
+
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Adjust as needed */
+        }
+
+        .add-symptom {
+            text-align: center;
+        }
+    </style>
+<header>
+    <div class="logo">
+        <img src="/css/healthcarelocator-high-resolution-logo.png" alt="Logo" style="max-width: 150px; max-height: 50px;">
+    </div>
+    <div class="admin-profile">
+       Update Symptom <!-- Admin profile information: username, role, etc. -->
+    </div>
+    <div class="logout">
+        <a href="/admin/home">Back</a> <!-- Logout link/button -->
+    </div>
+</header>
+
+<main >
+    <div class="add-symptom">
+        <h1>Update Symptom</h1>
+        <form id="updateSymptomForm" method="post" th:object="${symptom}" th:action="@{/symptoms/updateSymptom/{id}(id=${symptom.id})}">
+            <label for="name">Symptom Name:</label><br>
+            <input type="text" id="name" name="name"><br><br>
+
+            <input type="submit" value="Update Symptom">
+        </form>
+    </div>
+</main>
+
+<footer>
+    <!-- Footer content -->
+</footer>
+
+</body>
+</html>
