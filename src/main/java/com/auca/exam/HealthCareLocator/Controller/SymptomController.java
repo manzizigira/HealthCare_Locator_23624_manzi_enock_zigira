@@ -241,14 +241,11 @@ public class SymptomController {
 
     @GetMapping("/ViewPage")
     public String showSymptoms(Model model, HttpSession session) {
-        Integer id = (Integer) session.getAttribute("loggedInUserId");
-        if (id == null) {
-            return "Client/Login"; // Redirect to login page if not logged in
-        } else {
+
             List<Symptom> symptoms = symptomService.getAllSymptoms();
             model.addAttribute("symptoms", symptoms);
             return "/Admin/Symptom/ViewSymptom"; // Return the name of your Thymeleaf HTML template
-        }
+
     }
 
 

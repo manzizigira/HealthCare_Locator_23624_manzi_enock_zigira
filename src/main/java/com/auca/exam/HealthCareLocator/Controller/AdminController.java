@@ -28,7 +28,7 @@ public class AdminController {
 
         if (authenticatedUser != null) {
             // If authentication succeeds, you can redirect to a dashboard or another page
-            return "/Admin/Admin"; // Redirect to the dashboard page
+            return "/Admin/AdminHome"; // Redirect to the dashboard page
         } else {
             // If authentication fails, you can redirect back to the login page with an error message
             throw new RuntimeException("ERROR!");
